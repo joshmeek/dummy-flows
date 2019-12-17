@@ -24,8 +24,8 @@ def load(data):
 from prefect import Flow
 
 with Flow(
-    "ETL",
-    storage=Docker(registry_url="joshmeek18", image_name="flows"),
+    "ETL2",
+    storage=Docker(registry_url="joshmeek18", image_name="flows", prefect_version="master", base_image="python:3.7"),
     # environment=RemoteEnvironment(labels=["dev", "staging"]),
 ) as flow:
     e = extract()

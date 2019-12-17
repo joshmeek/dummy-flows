@@ -1,4 +1,5 @@
-from prefect import task
+from prefect import task, Flow
+
 
 @task
 def extract():
@@ -18,12 +19,9 @@ def load(data):
     print("Here's your data: {}".format(data))
 
 
-from prefect import Flow
-
-with Flow("ETL") as flow:
+with Flow("ETL_Local") as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
-# FlowRunner(flow).run()
-flow.register(project_name="Demo")
+# flow.deploy(project_name="Demo")

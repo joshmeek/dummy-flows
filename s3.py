@@ -1,4 +1,8 @@
 from prefect import task
+from prefect.environments.storage import S3
+
+# from prefect.environments import RemoteEnvironment
+
 
 @task
 def extract():
@@ -20,10 +24,9 @@ def load(data):
 
 from prefect import Flow
 
-with Flow("ETL") as flow:
+with Flow("s3-storage", storage=S3(bucket="my-prefect-flows")) as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
-# FlowRunner(flow).run()
 flow.register(project_name="Demo")

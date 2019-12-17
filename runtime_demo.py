@@ -1,4 +1,6 @@
-from prefect import task
+from prefect import Flow, task
+from prefect.runtimes import FlowCLI
+
 
 @task
 def extract():
@@ -18,12 +20,15 @@ def load(data):
     print("Here's your data: {}".format(data))
 
 
-from prefect import Flow
+def main():
+    with Flow("Runtime-Flow") as flow:
+        e = extract()
+        t = transform(e)
+        l = load(t)
 
-with Flow("ETL") as flow:
-    e = extract()
-    t = transform(e)
-    l = load(t)
+        runtime = FlowCLI(flow=flow)
+        runtime.run()
 
-# FlowRunner(flow).run()
-flow.register(project_name="Demo")
+
+if __name__ == "__main__":
+    main()
