@@ -10,9 +10,9 @@ def add(x, y):
 with Flow(
     "dockerfile-test",
     storage=Docker(
-        prefect_version="fix-custom-dockerfiles", dockerfile="Dockerfiles/Dockerfile"
+        dockerfile="Dockerfiles/Dockerfile"
     ),
 ) as flow:
     add(1, 2)
 
-flow.deploy(project_name="Demo")
+flow.register(project_name="Demo")
