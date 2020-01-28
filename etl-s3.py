@@ -2,19 +2,19 @@ from prefect import Flow, task
 from prefect.environments.storage import S3
 
 
-@task(checkpoint=True)
+@task
 def extract():
     """Get a list of data"""
     return [1, 2, 3]
 
 
-@task(checkpoint=True)
+@task
 def transform(data):
     """Multiply the input by 10"""
     return [i * 10 for i in data]
 
 
-@task(checkpoint=True)
+@task
 def load(data):
     """Print the data to indicate it was received"""
     # import random

@@ -11,4 +11,5 @@ with Flow(
 ) as flow:
     do_nothing()
 
-flow.register(project_name="QA", version_group_id="asdffdsa")
+id = flow.register(project_name="QA", version_group_id="asdffdsa")
+print(id)
