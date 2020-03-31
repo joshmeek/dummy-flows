@@ -3,8 +3,9 @@ from prefect.environments.storage import S3
 import datetime
 
 
-@task(max_retries=0, retry_delay=datetime.timedelta(minutes=1))
+@task(max_retries=1, retry_delay=datetime.timedelta(minutes=1))
 def fail_me():
+    raise ValueError()
     print("This will not work")
 
 

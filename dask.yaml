@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dask-scheduler
+  labels:
+    app: dask-scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dask-scheduler
+  template:
+    metadata:
+      labels:
+        app: dask-scheduler
+    spec:
+      containers:
+        - name: dask-scheduler
+          image: prefecthq/prefect:latest
+          args:
+            - dask-scheduler
+            - --port
+            - "8786"
+          env:
+            - name: DASK_DISTRIBUTED__SCHEDULER__WORK_STEALING
+              value: "False"
+          ports:
+            - containerPort: 8786
+          resources: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dask-worker
+  labels:
+    app: dask-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: dask-worker
+  template:
+    metadata:
+      labels:
+        app: dask-worker
+    spec:
+      containers:
+        - image: prefecthq/prefect:latest
+          args:
+            [
+              dask-worker,
+              dask-scheduler:8786,
+              --no-bokeh,
+              --nthreads,
+              "1",
+              --nprocs,
+              "2",
+            ]
+          name: dask-worker
+          env:
+            - name: DASK_DISTRIBUTED__SCHEDULER__BLOCKED_HANDLERS
+              value: "['feed', 'run_function']"
+            - name: DASK_DISTRIBUTED__SCHEDULER__WORK_STEALING
+              value: "False"
+          resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dask-scheduler
+spec:
+  selector:
+    app: dask-scheduler
+  ports:
+    - port: 8786
+      targetPort: 8786

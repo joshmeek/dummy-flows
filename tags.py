@@ -1,13 +1,12 @@
 from prefect import task
 
-
 @task
 def extract():
     """Get a list of data"""
     return [1, 2, 3]
 
 
-@task
+@task(tags=["testmetag"])
 def transform(data):
     """Multiply the input by 10"""
     return [i * 10 for i in data]
@@ -21,9 +20,10 @@ def load(data):
 
 from prefect import Flow
 
-with Flow("ETL!") as flow:
+with Flow("tags") as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
-flow.register()
+# FlowRunner(flow).run()
+flow.register(project_name="Demo")

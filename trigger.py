@@ -1,5 +1,6 @@
 from prefect import task
-
+from prefect.engine.signals import FAIL
+from prefect.triggers import some_successful
 
 @task
 def extract():
@@ -10,10 +11,10 @@ def extract():
 @task
 def transform(data):
     """Multiply the input by 10"""
-    return [i * 10 for i in data]
+    raise FAIL("I am a failure")
 
 
-@task
+@task(trigger=some_successful)
 def load(data):
     """Print the data to indicate it was received"""
     print("Here's your data: {}".format(data))
@@ -21,9 +22,10 @@ def load(data):
 
 from prefect import Flow
 
-with Flow("ETL!") as flow:
+with Flow("trigger-test") as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
-flow.register()
+# FlowRunner(flow).run()
+flow.register(project_name="QA")
