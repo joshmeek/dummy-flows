@@ -26,4 +26,5 @@ with Flow("ETL!") as flow:
     t = transform(e)
     l = load(t)
 
-flow.register()
+# flow.register()
+flow.run()

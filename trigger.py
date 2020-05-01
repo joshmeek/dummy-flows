@@ -28,4 +28,5 @@ with Flow("trigger-test") as flow:
     l = load(t)
 
 # FlowRunner(flow).run()
-flow.register(project_name="QA")
+# flow.register(project_name="QA")
+flow.run()
