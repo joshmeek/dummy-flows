@@ -58,7 +58,7 @@ def get_level_3_data(partition):
 
 @task(
     max_retries=3,
-    retry_delay=timedelta(seconds=5),
+    retry_delay=timedelta(minutes=11),
     state_handlers=[_custom_alert_on_failure],
 )
 def load_dimension(d):
@@ -70,7 +70,7 @@ def load_dimension(d):
 
 @task(
     max_retries=3,
-    retry_delay=timedelta(seconds=5),
+    retry_delay=timedelta(minutes=11),
     state_handlers=[_custom_alert_on_failure],
 )
 def load_fact(d):
@@ -80,7 +80,7 @@ def load_fact(d):
 
 @task(
     max_retries=3,
-    retry_delay=timedelta(seconds=5),
+    retry_delay=timedelta(minutes=11),
     state_handlers=[_custom_alert_on_failure],
 )
 def load_agg_fact(d):
@@ -146,6 +146,6 @@ with Flow("Prefect Load Process Flow") as flow:
     exit_flow.set_upstream(exit_log_notify_success)
 
 flow.environment = RemoteEnvironment(executor="prefect.engine.executors.DaskExecutor")
-flow.register()
-flow.run_agent()
+flow.register(project_name="Demo")
+# flow.run_agent()
 # flow.run()

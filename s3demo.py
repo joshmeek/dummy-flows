@@ -1,35 +1,29 @@
-from prefect import task
+from prefect import task, Flow
+from prefect.environments.storage import S3
 import time
 
 @task
 def extract():
     """Get a list of data"""
-    time.sleep(5)
     return [1, 2, 3]
 
 
 @task
 def transform(data):
     """Multiply the input by 10"""
-    time.sleep(5)
     return [i * 10 for i in data]
 
 
 @task
 def load(data):
     """Print the data to indicate it was received"""
-    time.sleep(5)
     print("Here's your data: {}".format(data))
 
-
-from prefect import Flow
-
-with Flow("ETL-2") as flow:
+with Flow("ETL") as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
-# flow.run()
-flow.register()
-# flow.register(project_name="Demo")
-# flow.run_agent(show_flow_logs=True)
+flow.storage = S3(bucket="my-prefect-flows")
+
+flow.register(project_name="Demo")

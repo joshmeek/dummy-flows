@@ -27,4 +27,4 @@ with Flow("mlm") as f:
     push.map(documents, sinks)
     # sink.map(document)
 
-f.run()
+f.visualize(filename="test.png", format="png")

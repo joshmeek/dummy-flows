@@ -1,4 +1,6 @@
 from prefect import task, Flow
+from prefect.engine.executors import DaskExecutor
+from prefect.environments import RemoteEnvironment
 
 @task
 def values():
@@ -12,6 +14,8 @@ with Flow('bigmap') as f:
     vals = values()
     pvals.map(vals)
 
-f.register("Demo")
+f.environmet = RemoteEnvironment(executor="prefect.engine.executors.DaskExecutor")
+f.register()
 
-# f.run()
+# if __name__ == "__main__":
+#     f.run(executor=DaskExecutor())

@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: prefect-docker-job
+  name: test-job
   labels:
     identifier: ''
 spec:
@@ -13,9 +13,9 @@ spec:
       restartPolicy: Never
       containers:
         - name: flow-container
-          image: ''
-          command: []
-          args: []
+          image: prefecthq/prefect:latest
+          command: ["/bin/bash", "-c", "--"]
+          args: ["while true; do sleep 30; done;"]
           env:
             - name: DOCKER_HOST
               value: tcp://localhost:2375

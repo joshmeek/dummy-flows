@@ -21,10 +21,12 @@ def load(data):
 
 from prefect import Flow
 
-with Flow("ETL-docker-38", storage=Docker(registry_url="joshmeek18")) as flow:
+with Flow("ETL-docker-38", storage=Docker(image_name="flows")) as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
 # FlowRunner(flow).run()
+# flow.register(project_name="Demo")
+
 flow.register(project_name="Demo")

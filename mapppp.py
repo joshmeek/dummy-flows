@@ -18,4 +18,5 @@ with Flow('map') as f:
     d = do_something.map(v)
     final_task(d)
 
-f.run()
+# f.run()
+f.register()
