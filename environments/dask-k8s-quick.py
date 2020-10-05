@@ -19,7 +19,7 @@ flow = Flow(
     storage=Docker(
         registry_url="joshmeek18",
         image_name="flows",
-        prefect_version="master",
+        prefect_version="test_branch"
     ),
 )
 

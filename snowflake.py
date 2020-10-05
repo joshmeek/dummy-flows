@@ -16,6 +16,6 @@ class SFQ(Task):
 
 with Flow("snowflake-flow") as flow:
     x = Secret("TEST_SECRET")()
-    SFQ(x)()
+    # SFQ(x)()
 
 flow.run()

@@ -3,6 +3,7 @@ metadata:
   labels:
     foo: bar
 spec:
+  replicas: 2
   restartPolicy: Never
   containers:
   - image: joshmeek18/flows:qqq

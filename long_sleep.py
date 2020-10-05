@@ -1,5 +1,5 @@
 from prefect import Flow, task
-
+from prefect.environments.storage import Docker
 
 @task
 def sleep_me():
@@ -9,7 +9,7 @@ def sleep_me():
     return "600"
 
 
-with Flow("long-sleep") as flow:
+with Flow("long-sleep", storage=Docker(registry_url="joshmeek18", image_name="flows")) as flow:
     sleep_me()
 
-flow.register(project_name="QA")
+flow.register(project_name="Demo")

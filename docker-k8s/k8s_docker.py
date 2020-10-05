@@ -11,7 +11,7 @@ from prefect.tasks.docker import (
 from prefect.triggers import always_run
 
 
-
+# Pass the host of the Docker daemon to each task
 image = PullImage(
     docker_server_url="tcp://localhost:2375",
     repository="prefecthq/prefect",
@@ -29,11 +29,11 @@ flow = Flow(
     "Run a Prefect Flow in Docker",
     environment=KubernetesJobEnvironment(job_spec_file="job_spec.yaml"),
     storage=Docker(
-        registry_url="joshmeek18", image_name="flows", prefect_version="core_cloud_docs"
+        registry_url="joshmeek18", image_name="flows",
     ),
 )
 
-## set individual task dependencies using imperative API
+# set task dependencies using imperative API
 container.set_upstream(image, flow=flow)
 start.set_upstream(container, flow=flow, key="container_id")
 logs.set_upstream(container, flow=flow, key="container_id")
@@ -42,4 +42,4 @@ status_code.set_upstream(container, flow=flow, key="container_id")
 status_code.set_upstream(start, flow=flow)
 logs.set_upstream(status_code, flow=flow)
 
-flow.deploy(project_name="Demo")
+flow.register("Demo")

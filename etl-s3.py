@@ -28,7 +28,7 @@ def load(data):
 
 with Flow(
     "ETL-s3",
-    storage=S3(bucket="my-prefect-flows")
+    storage=S3(bucket="my-prefect-flows", secrets=["AWS_CREDENTIALS"])
 ) as flow:
     e = extract()
     t = transform(e)
