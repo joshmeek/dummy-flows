@@ -19,6 +19,3 @@ spec:
         env:
           - name: MY_ENV
             value: foo
-        volumeMounts:
-          - name: google-cloud-key
-            mountPath: /var/secrets/google

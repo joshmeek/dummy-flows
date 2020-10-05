@@ -9,8 +9,9 @@ def do():
 with Flow("env-metadata") as f:
     do()
 
-f.storage = S3(bucket="my-flows", secrets=["AWS_CREDENTIALS"])
-f.environment = RemoteEnvironment(metadata={"image": "authless:image"})
+f.storage = S3(bucket="my-prefect-flows", secrets=["AWS_CREDENTIALS"])
+# f.environment = RemoteEnvironment(metadata={"image": "lcltst2"})
 f.register(project_name="Demo")
+
 # f.environment = RemoteEnvironment(metadata={"image": "testimage:latest"})
 # f.environment = RemoteEnvironment()

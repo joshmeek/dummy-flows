@@ -1,6 +1,10 @@
 
-FROM python:3.6
+FROM prefecthq/prefect:all_extras-0.13.7
 
-COPY Dockerfiles/requirements.txt requirements.txt
+# COPY requirements.txt requirements.txt
 
-RUN pip install -r requirements.txt
+# RUN pip install -r requirements.txt
+
+COPY f.prefect f.prefect
+
+RUN python -c "from prefect import Flow; f = Flow.load('/f.prefect'); f.run()"

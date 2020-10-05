@@ -1,5 +1,5 @@
-from prefect import Flow, task
-from prefect.environments.storage import S3
+from prefect import task
+from prefect.environments.storage import Docker
 
 
 @task
@@ -17,22 +17,20 @@ def transform(data):
 @task
 def load(data):
     """Print the data to indicate it was received"""
-    # import random
-    # i = random.randint(0, 5)
-    # if i != 3:
-    #     raise ValueError("The three is not for me.")
-
     print("Here's your data: {}".format(data))
 
 
+from prefect import Flow
 
 with Flow(
-    "ETL-s3",
-    storage=S3(bucket="my-prefect-flows", secrets=["AWS_CREDENTIALS"])
+    "image-pull-error",
+    storage=Docker(),
 ) as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
-flow_id = flow.register(project_name="Demo")
-# print(flow_id)
+# FlowRunner(flow).run()
+# flow.register(project_name="Demo")
+
+flow.register(project_name="Demo")

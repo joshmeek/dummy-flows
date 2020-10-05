@@ -4,9 +4,10 @@ import prefect
 from prefect import Flow
 from prefect import Task
 from prefect.triggers import any_failed
+from prefect import unmapped
 
-prefect_logger = prefect.utilities.logging.get_logger()
-prefect_logger.setLevel(logging.INFO)
+# prefect_logger = prefect.utilities.logging.get_logger()
+# prefect_logger.setLevel(logging.INFO)
 
 
 class TaskA(Task):
@@ -46,7 +47,8 @@ task_d = TaskD(trigger=any_failed)
 
 
 with Flow("dummy_flow") as flow:
-    task_c_ref = task_c.map(data=task_a, upstream_tasks=[task_b])
-    task_d.map(data=task_a, upstream_tasks=[task_c_ref])
+    task_c_ref = task_c.map(data=task_a, upstream_tasks=[unmapped(task_b)])
+    task_d.map(data=task_a, upstream_tasks=[unmapped(task_c_ref)])
 
+# flow.visualize()
 flow.run()

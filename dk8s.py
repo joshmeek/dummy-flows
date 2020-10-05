@@ -1,6 +1,6 @@
 from prefect import task, Flow
 from prefect.environments import DaskKubernetesEnvironment
-from prefect.environments.storage import Docker
+from prefect.environments.storage import S3
 
 
 @task
@@ -13,19 +13,14 @@ def output_value(value):
     print(value)
 
 
-flow = Flow(
-    "dk8s-debug",
-    environment=DaskKubernetesEnvironment(min_workers=2, max_workers=4),
-    storage=Docker(
-        registry_url="joshmeek18",
-        image_name="flows",
-        prefect_version="test_branch"
-    ),
-)
+flow = Flow("dk8s-debug",)
 
 # set task dependencies using imperative API
 output_value.set_upstream(get_value, flow=flow)
 output_value.bind(value=get_value, flow=flow)
 
-flow.register("Demo")
-
+flow.storage = S3(bucket="my-prefect-flows", secrets=["AWS_CREDENTIALS"])
+flow.environment = DaskKubernetesEnvironment(
+    metadata={"image": "joshmeek18/flows:all_extras9"}
+)
+flow.register(project_name="Demo")

@@ -17,7 +17,7 @@ flow = Flow(
     "Kubernetes Job Environment w/ Resource Requests & Limits",
     environment=KubernetesJobEnvironment(job_spec_file="job_spec.yaml"),
     storage=Docker(
-        registry_url="joshmeek18", image_name="flows"
+        registry_url="joshmeek18", image_name="flows", prefect_version="test_branch"
     ),
 )
 
@@ -25,4 +25,4 @@ flow = Flow(
 output_value.set_upstream(get_value, flow=flow)
 output_value.bind(value=get_value, flow=flow)
 
-flow.deploy(project_name="Demo")
+flow.register(project_name="Demo")
