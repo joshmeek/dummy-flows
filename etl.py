@@ -32,7 +32,7 @@ with Flow("ETL") as flow:
 from prefect.engine.executors import DaskExecutor
 from prefect.environments import LocalEnvironment
 
-flow.environment = LocalEnvironment(labels=["asdf3"])
+#flow.environment = LocalEnvironment(labels=["test"])
 
 # flow.run()
 # flow.register()

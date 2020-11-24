@@ -4,6 +4,7 @@ FROM prefecthq/prefect:all_extras-0.13.7
 # COPY requirements.txt requirements.txt
 
 # RUN pip install -r requirements.txt
+ENV A : Guppy
 
 COPY f.prefect f.prefect
 
