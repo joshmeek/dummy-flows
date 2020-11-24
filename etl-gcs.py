@@ -1,5 +1,5 @@
 from prefect import Flow, task
-from prefect.environments.storage import S3
+from prefect.environments.storage import GCS
 
 
 @task
@@ -19,12 +19,12 @@ def load(data):
 
 
 with Flow(
-    "ETL-s3-reg-demo",
-    storage=S3(bucket="my-prefect-flows", secrets=["AWS_CREDENTIALS"],)
+    "ETL-gcs-script",
+    storage=GCS(bucket="prefect-flows-josh", stored_as_script=True,)
 ) as flow:
     e = extract()
     t = transform(e)
     l = load(t)
 
-flow.register(project_name="Demo")
+# flow_id = flow.register(project_name="Demo")
 # print(flow_id)
